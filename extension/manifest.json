@@ -1,0 +1,29 @@
+{
+	"manifest_version": 3,
+	"name": "Roll Call",
+	"version": "1.0.0",
+	"author": "Lucas Burlingham",
+	"homepage_url": "https://github.com/lucasburlingham/rollcall",
+	"action": {
+		"default_popup": "chat.html",
+		"default_icon": {
+			"16": "icons/rollcall_16.png",
+			"32": "icons/rollcall_32.png"
+		}
+	},
+	"description": "Chat with other users on the same page or site as you.",
+	"icons": {
+		"48": "icons/rollcall_48.png",
+		"96": "icons/rollcall_96.png"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "{0f6938c5-b959-4a2a-b345-2266fa87bda1}"
+		}
+	},
+	"sidebar_action": {
+		"default_title": "Roll Call",
+		"default_panel": "src/chat.html",
+		"default_icon": "icons/rc_500.png"
+	}
+}

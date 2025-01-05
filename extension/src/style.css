@@ -1,0 +1,82 @@
+@import url('assets/Red_Hat_Display/static/RedHatDisplay-Regular.ttf');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+	/* Center content */
+	text-align: center;
+	/* Use the Red Hat Display font */
+	font-family: 'Red Hat Display', 'Roboto Bold', sans-serif;
+	/* Add some padding */
+	padding: 1rem 0;
+
+}
+
+
+body {
+	/* Use the Red Hat Display font */
+	font-family: 'Red Hat Display', 'Roboto', sans-serif;
+	/* Dark mode by default */
+	background-color: #121212;
+	color: #fff;
+	margin: 1rem;
+	padding: 0;
+}
+
+a {
+	/* Remove underline */
+	text-decoration: dotted;
+	/* Change color */
+	color: #fff;
+}
+
+
+/* Classes */
+.unstyled-list {
+	list-style: symbols('-');
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-italic {
+	font-style: italic;
+}
+
+.gradient-header {
+	/* Add a gradient background */
+	background: linear-gradient(#1e1e1e66 50%, #121212);
+	/* Extend the width to 100% */
+	width: 100%;
+}
+
+.top-border {
+	width: 100%;
+	border-color: #252525;
+	border-width: 2px;
+	border-style: solid;
+	/* Top rounded, none on the bottom since we're connecting it with the top of another */
+	border-radius: 10px 10px 0px 0px;
+	border-bottom: none;
+
+	/* Make sure we can butt other elements up to the bottom */
+	margin-bottom: 0;
+
+}
+
+.side-border {
+	width: 100%;
+	border-color: #252525;
+	border-width: 2px;
+	border-style: solid;
+	border-top: none;
+	border-bottom: none;
+	/* Make sure we can butt this element up to the previous and next ones */
+	margin-top: 0;
+	margin-bottom: 0;
+}
