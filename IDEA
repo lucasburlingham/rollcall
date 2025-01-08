@@ -1,0 +1,6 @@
+server:
+
+When the client loads, query the server for the messages from that site. Server responds with last 10 messages in JSON format.
+
+When a message is sent, create the table if needed and send a websocket announcement is sent containing the domain name that has a new message. The client then queries the server for the new messages.
+
