@@ -2,3 +2,5 @@ requests
 flask
 websockets
 pyotp
+pyopenssl
+flask-cors

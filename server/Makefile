@@ -1,5 +1,9 @@
 venv:
+	@echo "Removing old venv"
+	rm -rf .venv
+	@echo "Creating new venv"
 	python3 -m venv .venv
+	@echo "Activating venv"
 	source .venv/bin/activate
 
 setup: venv

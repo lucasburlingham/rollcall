@@ -15,7 +15,7 @@
 // with about:debugging#/runtime/this-firefox
 site_name = "firefoxabout.com";
 
-const api_url = 'http://100.92.62.17:8080/api/';
+const api_url = 'https://10.0.0.9:8085/api/';
 
 // Get the latest 10 messages from the server with a GET request
 function getMessages() {

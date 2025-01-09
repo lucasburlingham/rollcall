@@ -8,6 +8,7 @@ from flask import Flask, jsonify, request
 # import asyncio
 # import pyotp
 import time
+import Flask-CORS
 
 
 # This file will:
