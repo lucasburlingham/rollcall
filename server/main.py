@@ -72,7 +72,7 @@ def main(ADDRESS="0.0.0.0", PORT="8080", DB_PATH="rollcall_data.db"):
             reason = "Missing api_token"
             return jsonify({"status": "unauthorized", "reason": reason})
 
-        if auth_token is "":
+        if auth_token == "":
             return jsonify({"status": "unauthorized", "reason": "api_token is empty"})
 
         print("Token: " + json.dumps(auth_token))
