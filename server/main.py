@@ -160,8 +160,7 @@ def main(ADDRESS="0.0.0.0", PORT="8080", DB_PATH="rollcall_data.db"):
         # Open the 405 page and return it
         return open("docs/405.html").read()
     
-    @app.
-
+    
     app.run(host=ADDRESS, port=PORT)
 
 
