@@ -50,6 +50,7 @@ def main(ADDRESS="0.0.0.0", PORT="8080", DB_PATH="rollcall_data.db"):
 
     # Listen for data with flask
     app = Flask(__name__)
+    CORS(app)
 
     @app.route('/api/<page>', methods=['GET'])
     def api(page):
@@ -158,6 +159,8 @@ def main(ADDRESS="0.0.0.0", PORT="8080", DB_PATH="rollcall_data.db"):
     def method_not_allowed(e):
         # Open the 405 page and return it
         return open("docs/405.html").read()
+    
+    @app.
 
     app.run(host=ADDRESS, port=PORT)
 
