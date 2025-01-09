@@ -8,7 +8,7 @@ from flask import Flask, jsonify, request
 # import asyncio
 # import pyotp
 import time
-import Flask-CORS
+from flask_cors import CORS
 
 
 # This file will:
