@@ -1,3 +1,5 @@
 auth_tokens
 server/.venv/
 server/rollcall_data.db
+server/cert.pem
+server/key.pem
