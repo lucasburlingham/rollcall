@@ -80,3 +80,38 @@ a {
 	margin-top: 0;
 	margin-bottom: 0;
 }
+
+.bottom-border {
+	width: 100%;
+	border-color: #252525;
+	border-width: 2px;
+	border-style: solid;
+	/* Bottom rounded, none on the top since we're connecting it with the bottom of another */
+	border-radius: 0px 0px 10px 10px;
+	border-top: none;
+
+	/* Make sure we can butt other elements up to the top */
+	margin-top: 0;
+}
+
+.chat-form {
+/* center the input box */
+	display: flex;
+	justify-content: center;
+
+	/* Make the box 90% of the width of the element */
+	width: 90%;
+
+	margin: 0 auto;
+	padding-top: 1rem;
+}
+
+.chat-form > input {
+	/* Make the input box 100% of the width of the element */
+	width: 100%;
+}
+
+.chat-form > button {
+	/* Make the button 10% of the width of the element */
+	width: 10%;
+}
