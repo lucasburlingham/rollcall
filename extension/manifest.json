@@ -5,7 +5,7 @@
 	"author": "Lucas Burlingham",
 	"homepage_url": "https://github.com/lucasburlingham/rollcall",
 	"action": {
-		"default_popup": "chat.html",
+		"default_popup": "src/chat.html",
 		"default_icon": {
 			"16": "icons/rollcall_16.png",
 			"32": "icons/rollcall_32.png"
@@ -25,5 +25,17 @@
 		"default_title": "Roll Call",
 		"default_panel": "src/chat.html",
 		"default_icon": "icons/rc_500.png"
+	},
+	"host_permissions": [
+		"*://*/*"
+	],
+	"permissions": [
+		"activeTab",
+		"tabs"
+	],
+	"background": {
+		"scripts": [
+			"src/background.js"
+		]
 	}
 }
