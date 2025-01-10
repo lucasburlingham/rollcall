@@ -1,7 +1,6 @@
 import re
-import requests as request
 import json
-import os
+# import os
 import sqlite3
 from flask import Flask, jsonify, request
 # import subprocess
@@ -20,7 +19,7 @@ from flask_cors import CORS
 
 # The database is based on sqlite3, and who's schema is as follows:
 # Site-specific dynamic table:
-# CREATE TABLE "<insert sterilized site hostname>" (
+# CREATE TABLE "<insert sterilized spip ite hostname>" (
 # 	"id"	INTEGER NOT NULL,
 # 	"message"	TEXT NOT NULL,
 # 	"sender_id"	INTEGER NOT NULL,
@@ -50,7 +49,7 @@ def main(ADDRESS="0.0.0.0", PORT="8080", DB_PATH="rollcall_data.db"):
 
     # Listen for data with flask
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     @app.route('/api/<page>', methods=['GET'])
     def api(page):
@@ -61,51 +60,55 @@ def main(ADDRESS="0.0.0.0", PORT="8080", DB_PATH="rollcall_data.db"):
         message_history = get_recent_messages(c, page)
         return jsonify(message_history)
 
-    @app.route('/api/authenticated/<page>', methods=['POST'])
+    @app.route('/api/authenticated/<page>', methods=['POST', 'OPTIONS'])
     def api_post(page):
 
-        # Check to see if we're authenticated
-        # Get the authentication AUTH_TOKEN from the header if it exists
-        try:
+        if request.method == 'OPTIONS':
+            print("OPTIONS request received")
+            # Handle preflight request
+            response = app.make_default_options_response()
+            headers = response.headers
+            headers['Access-Control-Allow-Origin'] = '*'
+            headers['Access-Control-Allow-Methods'] = 'OPTIONS, POST'
+            headers['Access-Control-Allow-Headers'] = 'Content-Type, api_token'
+            return response
+        if request.method == 'POST':
+            # Get the AUTH_TOKEN from the body
             auth_token = request.json['api_token']
-        except KeyError:
-            reason = "Missing api_token"
-            return jsonify({"status": "unauthorized", "reason": reason})
 
-        if auth_token == "":
-            return jsonify({"status": "unauthorized", "reason": "api_token is empty"})
+            # Check to see if the AUTH_TOKEN is valid (obviously this is a test token)
+            # if check_auth_token(auth_token): eventually we will have a function to check the token with the database populated with tokens from user creation
+            if auth_token == "test123testingtesting":
+                # Anytime we receive a message, start the database connection
+                c = connect_to_database(DB_PATH)
 
-        print("Token: " + json.dumps(auth_token))
-        for key, value in request.headers.items():
-            print(f"{key}: {value}")
+                message = request.json['message']
+                if message == "":
+                    reason = "message is empty"
+                    return jsonify({"status": "failed", "reason": reason})
 
-        # Check to see if the AUTH_TOKEN is valid (obviously this is a test token)
-        if auth_token == "test123testingtesting":
-            # Anytime we receive a message, start the database connection
-            c = connect_to_database(DB_PATH)
+                sender_id = request.json['sender_id']
+                if sender_id == "":
+                    reason = "sender_id is empty"
+                    return jsonify({"status": "failed", "reason": reason})
 
-            message = request.json['message']
-            if message == "":
-                reason = "Message is empty"
-                return jsonify({"status": "failed", "reason": reason})
+                # Insert the message into the database
+                status = insert_message(c, page, message, sender_id)
 
-            sender_id = request.json['sender_id']
-            if sender_id == "":
-                reason = "Sender ID is empty"
-                return jsonify({"status": "failed", "reason": reason})
-            # Insert the message into the database
-            status = insert_message(c, page, message, sender_id)
-
-            # Check to see if the message actually got inserted
-            if status:
-                return jsonify({"status": "success"})
+                # Check to see if the message actually got inserted
+                if status:
+                    return jsonify({"status": "success"})
+                else:
+                    return jsonify({"status": "failed", "reason": "Unknown error, message may not have been inserted"})
             else:
-                return jsonify({"status": "failed", "reason": "Unknown error"})
-        else:
-            return jsonify({"status": "unauthorized"})
+                print("API token is invalid")
+                return jsonify({"status": "unauthorized", "reason": "The API token is somehow missing or incorrect"})
 
     @app.route('/login', methods=['POST'])
     def login():
+
+        # respond with an api key after successful login FUTURE
+
         # Anytime we receive a message, start the database connection
         c = connect_to_database(DB_PATH)
 
@@ -159,9 +162,22 @@ def main(ADDRESS="0.0.0.0", PORT="8080", DB_PATH="rollcall_data.db"):
     def method_not_allowed(e):
         # Open the 405 page and return it
         return open("docs/405.html").read()
-    
-    
-    app.run(host=ADDRESS, port=PORT)
+
+    @app.after_request
+    def add_header(response):
+
+        response.headers['Access-Control-Allow-Origin'] = '127.0.0.1:8080'
+        response.headers['Access-Control-Allow-Origin'] = 'moz-extension://aaa49584-5f70-4c0e-b8eb-528560d42868'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.headers['Access-Control-Allow-Headers'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = '*'
+        response.headers['Content-Type'] = 'application/json'
+        response.status_code = 200
+        # Print all headers
+        return response
+
+    app.run(host=ADDRESS, port=PORT, ssl_context=(
+        'cert.pem', 'key.pem'))
 
 
 def connect_to_database(DB_PATH="rollcall_data.db"):
